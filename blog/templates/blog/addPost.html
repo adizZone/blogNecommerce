@@ -1,0 +1,88 @@
+{% extends 'blog/basic.html' %}
+
+{% block title %}AddPost{% endblock %}
+
+{% block css %}
+<style>
+    .text textarea{
+    width: 100%;
+    border: 0;
+    outline: 0;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    resize: none;
+}
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Post content -->
+<div class="container mb-5">
+    <h3 class="mt-5 mb-3 text-danger">Blog Content:</h3>
+
+    <button class="btn btn-sm btn-outline-secondary rounded-pill mb-4" onclick="window.location = '/blog/blogs'">Go
+        Back</button>
+
+    <form class="row g-3" action="/blog/AddPost/" method="post"> {% csrf_token %}
+        <div class="col-md-5 my-2 text">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" name="category" id="category" placeholder="Category" maxlength="50" required>
+        </div>
+        <div class="col-md-7 my-2 text">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" maxlength="100" required>
+        </div>
+        <div class="col-md-10 my-2 text">
+            <label for="intro" class="form-label">intro</label>
+            <textarea id="intro" rows="3" class="form-control" name="intro" placeholder="intro" maxlength="550" required></textarea>
+        </div>
+
+        <div class="col-md-3 my-2 text">
+            <label for="h1" class="form-label">Heading-1</label>
+            <input id="h1" type="text" class="form-control" name="h1" maxlength="50" required></input>
+        </div>
+        <div class="col-10 my-2 text">
+            <label for="c1" class="form-label">Content</label>
+            <textarea id="c1" rows="6" class="form-control" name="c1" required></textarea>
+        </div>
+
+        <div class="col-md-3 my-2 text">
+            <label for="h2" class="form-label">Heading-2</label>
+            <input id="h2" type="text" class="form-control" maxlength="50" name="h2"></input>
+        </div>
+        <div class="col-md-10 my-2 text">
+            <label for="c2" class="form-label">Content</label>
+            <textarea id="c2" rows="6" class="form-control" name="c2"></textarea>
+        </div>
+
+        <div class="col-md-3 my-2 text">
+            <label for="h3" class="form-label">Heading-3</label>
+            <input id="h3" type="text" class="form-control" maxlength="50" name="h3"></input>
+        </div>
+        <div class="col-md-10 my-2 text">
+            <label for="c3" class="form-label">Content</label>
+            <textarea id="c3" rows="6" class="form-control" name="c3"></textarea>
+        </div>
+
+        <div class="col-md-12 my-4">
+            <label for="img">Add a thumbnail:</label>
+            <input type="file" id="img" name="img" accept="image/*" required>
+        </div>
+
+        <div class="col-12 my-2">
+            <button type="submit" class="btn btn-outline-dark rounded-pill my-1">Upload</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // if('{{check}}' == 'a'){
+    //     window.location = "/blog/BlogPost/{{new_id}}"
+    // }
+</script>
+{% endblock %}

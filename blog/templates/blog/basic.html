@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v17.0"
+        nonce="QzAEkEGi"></script>
+
+
+    {% block js2 %} {% endblock %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>{% block title %} {% endblock %}</title>
+
+    {% block css %} {% endblock %}
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="/"><strong>Web Cart</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" id="li01">
+                    <a class="nav-link" href="http://127.0.0.1:8000/shop/">Home</a>
+                </li>
+
+                <li class="nav-item  active" id="li04">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+
+                <li class="nav-item" id="li02">
+                    <a class="nav-link" href="http://127.0.0.1:8000/shop/about">About</a>
+                </li>
+
+                <li class="nav-item" id="li03">
+                    <a class="nav-link" href="http://127.0.0.1:8000/shop/contact">Contact us</a>
+                </li>
+
+                <li class="nav-item" id="li05">
+                    <a class="nav-link" href="/blog/messenger">Messenger</a>
+                </li>
+
+            </ul>
+
+            <form class="form-inline my-2 my-lg-0" action="/blog/search_result" method="get">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search"
+                    id="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav mx-3">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <b>{{request.user}}</b>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/blog/logout/">Logout</a>
+                    </div>
+                </li>
+            </ul>
+
+            {% else %}
+
+            <button class="btn btn-danger mx-2" data-bs-target="#login-modal" data-bs-toggle="modal">login</button>
+            <button class="btn btn-danger" data-bs-target="#signup-modal" data-bs-toggle="modal">sign-up</button>
+            {% endif %}
+
+        </div>
+    </nav>
+
+
+    <!-- login modal -->
+    <div class="modal" tabindex="-1" id="login-modal">
+        <div class="modal-dialog">
+            <div class="modal-content bg-body-secondary">
+                <div class="modal-header">
+                    <h5 class="modal-title">login</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="/blog/login/" method="post"> {% csrf_token %}
+                        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+                        <div class="form-floating">
+                            <input type="login_username" class="form-control" id="login_username" placeholder="Username"
+                                name="login_username" required>
+                            <label for="login_username" style="left: 0;">Username</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                name="password" required>
+                            <label for="password" style="left: 0;">Password</label>
+                        </div>
+
+                        <button class="btn btn-primary w-100 py-2 my-2" type="submit">Sign in</button>
+                        <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- sign-up modal -->
+    <div class="modal" tabindex="-1" id="signup-modal">
+        <div class="modal-dialog">
+            <div class="modal-content bg-body-secondary">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sign-Up</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="/blog/sign_up/" method="post"> {% csrf_token %}
+                        <h1 class="h3 mb-3 fw-normal">Create an account</h1>
+
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="username" id="username"
+                                placeholder="Try a unique one!" required>
+                            <label for="username" class="mx-1">Username</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-floating col-6">
+                                <input type="text" class="form-control" name="fname" id="fname"
+                                    placeholder="Enter your first Name" required>
+                                <label for="fname" class="mx-1">First Name</label>
+                            </div>
+
+                            <div class="form-floating col-6">
+                                <input type="text" class="form-control" name="lname" id="lname"
+                                    placeholder="Enter your last Name" required>
+                                <label for="lname" class="mx-1">Last Name</label>
+                            </div>
+                        </div>
+
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="eamil" placeholder="name@example.com"
+                                name="email" required>
+                            <label for="eamil" class="mx-1">Email address</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-floating col-6">
+                                <input type="password" class="form-control" id="pass1" placeholder="Password"
+                                    name="pass1" required>
+                                <label for="pass1" class="mx-1">Password</label>
+                            </div>
+                            <div class="form-floating col-6">
+                                <input type="password" class="form-control" id="pass2" placeholder="Password again"
+                                    name="pass2" required>
+                                <label for="pass2" class="mx-1">Re-enter Password</label>
+                            </div>
+                        </div>
+
+                        <div class="form-check text-start my-3">
+                            <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault"
+                                style="float: left;" name="check">
+                            <label class="form-check-label me-4" for="flexCheckDefault" style="float: left;">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <button class="btn btn-primary w-100 py-2 mt-4" type="submit">Create</button>
+                        <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0" role="alert">
+        {% if message.tags == 'danger' %}
+        <strong>Error:</strong> {{message}}
+        {% else %}
+        <strong>{{message.tags}}:</strong> {{message}}
+        {% endif %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+    {% block body %} {% endblock %}
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
+
+    {% block js %} {% endblock %}
+
+
+</body>
+
+</html>

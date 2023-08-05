@@ -1,0 +1,89 @@
+{% extends 'blog/basic.html' %}
+{% block title %}Page not found{% endblock %}
+{% block css %}{% endblock %}
+
+{% block body %}
+<div id="main-frame-error" class="interstitial-wrapper container d-flex mt-5 col-12" jstcache="0" style="align-items: center; justify-content: center;">
+  <div id="main-content" jstcache="0">
+    <div class="icon icon-generic" jstcache="0"></div>
+    <div id="main-message" jstcache="0">
+      <h1 jstcache="0">
+        <span jsselect="heading" jsvalues=".innerHTML:msg" jstcache="9">Error 404 - this site was not found</span>
+        <a id="error-information-button" class="hidden" onclick="toggleErrorInformationPopup();" jstcache="0"></a>
+      </h1>
+      <p jsselect="summary" jsvalues=".innerHTML:msg" jstcache="1"><strong jscontent="hostName"
+          jstcache="22">This Site</strong> took too long to respond.</p>
+      <!--The suggestion list and error code are normally presented inline,
+          in which case error-information-popup-* divs have no effect. When
+          error-information-popup-container has the use-popup-container class, this
+          information is provided in a popup instead.-->
+      <div id="error-information-popup-container" jstcache="0">
+        <div id="error-information-popup" jstcache="0">
+          <div id="error-information-popup-box" jstcache="0">
+            <div id="error-information-popup-content" jstcache="0">
+              <div id="suggestions-list" jsdisplay="(suggestionsSummaryList &amp;&amp; suggestionsSummaryList.length)"
+                jstcache="16">
+                <p jsvalues=".innerHTML:suggestionsSummaryListHeader" jstcache="18">Try:</p>
+                <ul jsvalues=".className:suggestionsSummaryList.length == 1 ? 'single-suggestion' : ''" jstcache="19"
+                  class="">
+                  <li jsselect="suggestionsSummaryList" jsvalues=".innerHTML:summary" jstcache="21" jsinstance="0">
+                    Checking the connection</li>
+                  <li jsselect="suggestionsSummaryList" jsvalues=".innerHTML:summary" jstcache="21" jsinstance="*1"><a
+                      href="#" onclick="toggleHelpBox()" jstcache="0">Checking the proxy and the firewall</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="error-code" jscontent="errorCode" jstcache="17">ERR_CONNECTION_TIMED_OUT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="download-links-wrapper" class="hidden" jstcache="0">
+        <div id="download-link-wrapper" jstcache="0">
+          <a id="download-link" class="link-button" onclick="downloadButtonClick()" jsselect="downloadButton"
+            jscontent="msg" jsvalues=".disabledText:disabledMsg" jstcache="6" style="display: none;">
+          </a>
+        </div>
+        <div id="download-link-clicked-wrapper" class="hidden" jstcache="0">
+          <div id="download-link-clicked" class="link-button" jsselect="downloadButton" jscontent="disabledMsg"
+            jstcache="11" style="display: none;">
+          </div>
+        </div>
+      </div>
+      <div id="save-page-for-later-button" class="hidden" jstcache="0">
+        <a class="link-button" onclick="savePageLaterClick()" jsselect="savePageLater" jscontent="savePageMsg"
+          jstcache="10" style="display: none;">
+        </a>
+      </div>
+      <div id="cancel-save-page-button" class="hidden" onclick="cancelSavePageClick()" jsselect="savePageLater"
+        jsvalues=".innerHTML:cancelMsg" jstcache="4" style="display: none;">
+      </div>
+      <div id="offline-content-list" class="list-hidden" hidden="" jstcache="0">
+        <div id="offline-content-list-visibility-card" onclick="toggleOfflineContentListVisibility(true)" jstcache="0">
+          <div id="offline-content-list-title" jsselect="offlineContentList" jscontent="title" jstcache="12"
+            style="display: none;">
+          </div>
+          <div jstcache="0">
+            <div id="offline-content-list-show-text" jsselect="offlineContentList" jscontent="showText" jstcache="14"
+              style="display: none;">
+            </div>
+            <div id="offline-content-list-hide-text" jsselect="offlineContentList" jscontent="hideText" jstcache="15"
+              style="display: none;">
+            </div>
+          </div>
+        </div>
+        <div id="offline-content-suggestions" jstcache="0"></div>
+        <div id="offline-content-list-action" jstcache="0">
+          <a class="link-button" onclick="launchDownloadsPage()" jsselect="offlineContentList" jscontent="actionText"
+            jstcache="13" style="display: none;">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="buttons" class="nav-wrapper suggested-left container mt-4" style="margin-left: 29%;" jstcache="0">
+   <a href="/blog" role="button" class="btn btn-sm btn-outline-secondary">Reload</a>
+</div>
+{% endblock %}
+{% block js %}{% endblock %}

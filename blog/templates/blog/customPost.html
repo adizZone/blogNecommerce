@@ -1,0 +1,144 @@
+{% extends 'blog/basic.html' %}
+
+{% block title %}Customize blog post{% endblock %}
+
+{% block js2 %}
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script type="text/javascript">
+    tinymce.init({
+        selector: '#main',
+        width: 1100,
+        height: 600,
+        plugins: [
+            'advlist autolink link image lists charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+            'table emoticons template paste help'
+        ],
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+            'forecolor backcolor emoticons | help',
+        menu: {
+            favs: { title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons' }
+        },
+        menubar: 'favs file edit view insert format tools table help',
+        content_css: 'css/content.css'
+    });
+</script>
+
+{% endblock %}
+
+
+{% block css %}
+<style>
+    .text textarea {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid #ccc;
+        background: transparent;
+        resize: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Post content -->
+<div id="msg"></div>
+
+<div class="container mb-5">
+    <h3 class="mt-5 mb-3" style="color: darkblue;">Customize your blog content here:</h3>
+
+    <button class="btn btn-sm btn-outline-danger rounded-pill mb-5" onclick="window.location = '/blog/blogs'">Go
+        Back</button>
+
+    <form class="row g-3" action="/blog/custom-post/" method="post"> {% csrf_token %}
+
+        <div class="col-md-5 my-2 text">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" name="category" id="category" maxlength="50" placeholder="Category" required>
+        </div>
+        <div class="col-md-7 my-2 text">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" maxlength="100" required>
+        </div>
+        <div class="col-md-10 my-2 text">
+            <label for="intro" class="form-label">intro</label>
+            <textarea id="intro" rows="3" class="form-control" name="intro" placeholder="intro" maxlength="550" required></textarea>
+        </div>
+        <input type="hidden" id="whole-content" name="whole-content">
+
+
+        <div class="col-md-12 my-4 text">
+            <label for="main" class="form-label">
+                <h5>Customize content:</h5>
+            </label>
+            <textarea id="main" class="form-control" name="main" placeholder="This is a sample blog content."
+                required></textarea>
+
+            <div class="d-flex mt-2" style="align-items: center;">
+                <button type="button" class="btn btn-sm btn-secondary mx-1" id="bt">Get content</button>
+                <span>(Kindly press "Get content" before uploading the Post to ensure that your Content's
+                    uploaded
+                    successfully.)</span>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 my-4">
+            <label for="img">Add a thumbnail:</label>
+            <input type="file" id="img" name="img" accept="image/*" required>
+        </div>
+
+        <div class="col-12 my-2">
+            <button id="submit" type="submit" class="btn btn-sm btn-outline-danger rounded-pill my-1">Upload</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // if ('{{check}}' == 'a') {
+    //     window.location = "/blog/BlogPost/{{new_id}}"
+    // }
+
+    // getting data from tinyMCE
+    $("#bt").click(function () {
+        $("#whole-content").val(tinyMCE.get('main').getContent());
+        $("#main").val(tinyMCE.get('main').getContent());
+
+
+        var value = $("#whole-content").val()
+        if (value == "") {
+            document.location = '#'
+
+            $("#msg").html(`<div class="alert alert-warning alert-dismissible fade show my-0" role="alert">
+        <b>Warning:</b> The editor is empty!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>`)
+        }
+    });
+
+
+
+    var value = $("#whole-content").val()
+    if (value == "") {
+        $("#submit").click(function () {
+            document.location = '#'
+
+            $("#msg").html(`<div class="alert alert-info alert-dismissible fade show my-0" role="alert">
+        <b>Info:</b> Please get the customized content via pressing "Get content" first!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>`)
+        });
+    }
+
+</script>
+{% endblock %}

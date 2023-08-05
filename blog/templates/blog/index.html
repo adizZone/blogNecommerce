@@ -1,0 +1,171 @@
+{% extends 'blog/basic.html' %}
+{% block title %}Blog{% endblock %}
+{% block css %}
+<style>
+    /* #blogImg::before {
+        background: url('https://source.unsplash.com/1400x400/?sky,ocean,greenary') no-repeat center center/cover;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 54vh;
+        z-index: -1;
+        opacity: 0.9;
+    } */
+
+    #blogImg {
+        background: url('https://source.unsplash.com/1400x800/?sky,ocean,greenary') no-repeat center center/cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .main {
+        display: grid;
+        grid-template-columns: 70% 30%;
+    }
+
+    .right_container {
+        position: sticky;
+        top: 10px;
+        height: fit-content;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<body>
+    <div class="px-5 pt-5 pb-4 rounded text-body-emphasis bg-body-secondary" id="blogImg">
+        <div class="col-lg-6 text-light">
+            <h1 class="display-4 fst-italic" style="color: black;"><b>Here is Our BlogPost page</b></h1>
+            <hr>
+            <p class="lead my-3 mx-4" style="color: whitesmoke;"><b> - Lorem ipsum dolor sit amet consectetur,
+                    adipisicing elit. Dolore porro quisquam
+                    ex vitae iure dolorum qui, ducimus dicta beatae aliquam fugiat corrupti illo id accusamus a
+                    voluptate
+                    nemo error odit officia! Eveniet maxime sit sint consequuntur hic aliquid eos dolores..</b></p>
+            <hr>
+            <h4 style="color: aliceblue;">We have got the following posts...</h4>
+        </div>
+    </div>
+
+
+    <div class="main">
+        <!-- div: 1 -->
+        <div class="left_container px-5">
+            {% for i in blogs %}
+
+            {% if forloop.counter == 1 %}
+            <p>&#160;</p>
+            <p>&#160;</p>
+            {% endif %}
+
+            <h5 class="text-success"><b>Post - {{forloop.counter}} :</b></h5>
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-danger">{{i.category}}</strong>
+                    <h4 class="mb-0">{{i.title}}</h4>
+                    <div class="mb-1 text-body-secondary">{{i.publish_date}}, {{i.views}} views</div>
+                    <p class="card-text mb-auto mt-2">{{i.intro|slice:"0:200"}}...</p>
+                    <a href="/blog/BlogPost/{{i.blog_id}}"
+                        class="icon-link gap-1 icon-link-hover stretched-link text-primary">
+                        <b>Continue reading...</b>
+                    </a>
+                </div>
+
+                <div class="col-auto d-none d-lg-block">
+                    <img src="/media/{{i.image}}" alt="" width="220" height="250">
+                </div>
+            </div>
+            {% endfor %}
+
+
+            <!-- Add new post -->
+            <h5 class="text-danger"><b>Add new post :</b></h5>
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success-emphasis">Design</strong>
+                    <h3 class="mb-0">Post title</h3>
+                    <div class="mb-1 text-body-secondary">Nov 11</div>
+                    <p class="mb-4">This is a sample blog post text below as a natural lead-in to Lorem
+                        ipsum dolor sit amet consectetur adipisicing elit. Quam natus asperiores fugiat. Error nulla.
+                    </p>
+
+
+                    <ul class="navbar-nav mx-3">
+                        <li class="nav-item dropup">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <b>Write blog</b>
+                            </a>
+                            <div class="dropdown-menu">
+                                <span class="dropdown-item"><b>- Blog Post layout -</b></span>
+                                <a class="dropdown-item" href="/blog/AddPost/">Default</a>
+                                <a class="dropdown-item" href="/blog/custom-post/">Custom</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-auto d-none d-lg-block">
+                    <a href="/blog/AddPost">
+                        <svg class="bd-placeholder-img" width="220" height="250" xmlns="http://www.w3.org/2000/svg"
+                            role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                            focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
+                                dy=".3em">Add image</text>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- div: 2 -->
+        <div class="right_container px-4">
+            <p>&#160;</p>
+            <h3 style="color: rgb(118, 118, 118);"><b>About -</b></h3>
+            <hr>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere labore earum blanditiis debitis,
+                perferendis sequi odio reiciendis aperiam reprehenderit, eveniet expedita pariatur quo quas soluta
+                deleniti sapiente rerum minus. Maiores laborum voluptatem animi deleniti officia sequi maxime aperiam,
+                non assumenda? Omnis sequi odio voluptates culpa fuga libero at, ducimus blanditiis. Nobis, laudantium
+                laborum. Similique exercitationem quaerat dolorem modi, quos, rerum inventore quam consequuntur velit
+                nulla hic, repellendus nam sequi voluptatem tempora. Lorem ipsum dolor sit amet consectetur, adipisicing
+                elit. Ipsa natus quam, saepe, nobis vel voluptates animi quibusdam. Lorem ipsum dolor sit amet
+                consectetur adipisicing elit. Laborum, libero.</p>
+
+            <a href="/shop/about" class="icon-link gap-1 icon-link-hover stretched-link text-primary mx-1">
+                Go to About...
+            </a>
+
+            <p class="mb-5">&#160;</p>
+            <h3><b>Elsewhere</b></h3>
+            <hr>
+
+            <div class="d-flex flex-column">
+                <a href="#" class="icon-link gap-1 icon-link-hover stretched-link text-primary mx-1">
+                    Twitter
+                </a>
+
+                <a href="#" class="icon-link gap-1 icon-link-hover stretched-link text-primary mx-1">
+                    facebook
+                </a>
+
+                <a href="#" class="icon-link gap-1 icon-link-hover stretched-link text-primary mx-1">
+                    Instagram
+                </a>
+
+                <a href="#" class="icon-link gap-1 icon-link-hover stretched-link text-primary mx-1">
+                    GitHub
+                </a>
+            </div>
+            <p>&#160;</p>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block js %}{% endblock %}

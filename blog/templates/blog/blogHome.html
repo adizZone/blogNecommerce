@@ -1,0 +1,53 @@
+{% extends 'blog/basic.html' %}
+{% block title %}Blog Home{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block body %}
+{% if msg and count == 1 %}
+<div class="alert alert-dismissible fade show my-0" style="background-color: rgb(144, 144, 144);" role="alert">
+    <b style="color: black;">Welcome back &nbsp;<span style="color: whitesmoke;">{{msg}}</span> !</b>
+    <button type="button" class="close text-light" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+
+<div class="p-4 p-md-5 m-4 rounded text-light bg-dark">
+    <div class="container">
+        <div class="col-lg-12 px-0">
+            <h1 class="display-4 fst-italic" style="color: whitesmoke;">Title of a longer featured blog post</h1>
+            <p class="lead my-3" style="color: aliceblue;">Multiple lines of text that form the lede, informing new
+                readers quickly and
+                efficiently about what’s most interesting in this post’s contents. Lorem ipsum dolor sit amet
+                consectetur adipisicing elit. Quas provident qui non dolorum fuga, voluptatem illo. Facere perspiciatis
+                odio recusandae ea nisi ex labore accusamus perferendis eius, consequuntur blanditiis rem expedita
+                accusantium nesciunt voluptatem.</p>
+            <p class="lead mb-2 mt-5"><a href="/blog/blogs" role="button" class="btn btn-primary px-4"
+                    class="text-body-emphasis fw-bold">Go to Blog Post page</a></p>
+            <p class="mx-2">( Total posts: {{number|length}} )</p>
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <h3 class="text-danger mb-4"><b>Checkout our popular posts :</b></h3>
+
+    <div class="row d-flex" style="align-items: center; justify-content: center;">
+        {% for i in blogs %}
+        <div class="card col-3 mx-4 my-4" style="width: 18rem;">
+            <a href="/blog/BlogPost/{{i.blog_id}}">
+                <img src="/media/{{i.image}}" class="card-img-top" height="200px" alt="could not load image..."></a>
+            <div class="card-body">
+                <h5 class="card-text text-success"><b>{{i.category}}</b></h5>
+                <h6 class="card-text text-primary mx-1">{{i.title}}</h6>
+                <p class="card-text">{{i.views}} views</p>
+                <p class="card-text">{{i.intro|slice:"0:120"}}...</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block js %}{% endblock %}

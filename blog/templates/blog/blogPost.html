@@ -1,0 +1,201 @@
+{% extends 'blog/basic.html' %}
+{% block title %}BlogPost{% endblock %}
+
+{% block css %}
+<style>
+    #field textarea {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid #ccc;
+        background: transparent;
+        resize: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block body %}
+{% load humanize %}
+
+<article class="blog-post container my-5">
+    <div class="row">
+        <div class="col-6">
+            <button class="btn btn-outline-success rounded-pill mb-4" onclick="window.location = '/blog/blogs'">Go
+                Back</button>
+
+            <h1 class="display-5 link-body-emphasis mb-1">{{post.title}}</h1>
+            <p class="blog-post-meta">{{post.publish_date}}, by - <span class="text-primary">aditya</span>
+                <span>({{post.views}} views)</span>
+            </p>
+
+            <div class="my-2 fb-like" data-href="http://127.0.0.1:8000/blog/BlogPost/{{post.blog_id}}" data-width=""
+                data-layout="" data-action="" data-size="" data-share="true"></div>
+
+            <p>{{post.intro}}</p>
+            <hr>
+        </div>
+        <div class="col-6" style="display: flex; align-items: center; justify-content: center;">
+            <img src="/media/{{post.image}}" alt="" style="width: 450px; height: 300px;">
+        </div>
+    </div>
+
+    {{post.whole_content|safe}}
+
+    <h2>{{post.heading01}}</h2>
+    <p>{{post.content01}}</p>
+
+    <h3>{{post.heading02}}</h3>
+    <p>{{post.content02}}</p>
+
+    <h3>{{post.heading03}}</h3>
+    <p>{{post.content03}}</p>
+
+
+    <div class="row">
+        <div class="col-10 mt-4">
+            <button class="btn btn-outline-danger rounded-pill" id="prev" onclick="prev()">previous post</button>
+        </div>
+        <div class="col-2 mt-4">
+            <button class="btn btn-outline-danger rounded-pill" id="next" onclick="next()">next post</button>
+        </div>
+    </div>
+
+</article>
+
+<div class="container">
+    <h5 class="ml-3">{{comments|length}} Comments</h5>
+
+    {% if request.user.is_authenticated %}
+    <form action="/blog/comments/" method="post" class="col-md-8 mx-2 mb-4 mt-4"> {% csrf_token %}
+        <input type="hidden" name="post_sno" value="{{post.blog_id}}">
+        <input type="hidden" name="parent_sno" value="">
+        <div class="mb-3" id="field">
+            <label for="comment-{{comment.s_no}}" class="form-label">Add a comment</label>
+            <textarea id="comment-{{comment.s_no}}" rows="1" class="form-control" name="comment" placeholder="Write your comment here..."
+                required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-sm btn-outline-secondary">Post</button>
+    </form>
+
+    {% if comments|length == 0 %}
+    <h3 class="ml-3 text-success">Be the first to comment... !</h3>
+    {% endif %}
+
+    {% else %}
+    <p class="ml-4 mb-5">Login to add comments.</p>
+    {% endif %}
+
+
+    {% for comment, reply_count in comments %}
+    <div class="row">
+        <div class="col-md-1"><img class="w-100 px-2" style="border-radius: 50%;" src="/static/user2.png" alt=""></div>
+
+        <div class="col-md-5" style="border-bottom: 1px solid #ccc;">
+            <p class="mb-4"><b>{{comment.user.username}} </b>
+                <span class="badge bg-secondary text-light"> {{comment.timeStamp | naturaltime}}</span>
+            </p>
+            {{comment.your_comment}}
+        </div>
+    </div>
+
+    <div class="row ml-5 mb-5">
+        <div class="col-md-6 ml-4">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapsible-{{comment.s_no}}">
+                        <b>{{reply_count}} replies</b>
+                    </a>
+
+                    <div class="collapse" id="collapsible-{{comment.s_no}}">
+                        <!-- <p class="ml-3 mb-1">({{reply_count}} replies)</p> -->
+
+                        {% if request.user.is_authenticated %}
+                        <form action="/blog/comments/" method="post" class="col-md-8 mx-2 mb-5 mt-3"> {% csrf_token %}
+                            <input type="hidden" name="post_sno" value="{{post.blog_id}}">
+                            <input type="hidden" name="parent_sno" value="{{comment.s_no}}">
+                            <div class="mb-3" id="field">
+                                <label for="reply-{{comment.s_no}}" class="form-label">Add a reply</label>
+                                <textarea id="reply-{{comment.s_no}}" rows="1" class="form-control" name="comment"
+                                    placeholder="Write your comment here..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">Post</button>
+                        </form>
+                        {% else %}
+                        <p class="ml-3 mb-4"><b>Login to reply!</b></p>
+                        {% endif %}
+
+
+                        {% for reply in replies %}
+                        {% if reply.parent.s_no == comment.s_no %}
+                        <div class="row mb-4 mx-0">
+                            <div class="col-md-2"><img class="w-50 ml-4" style="border-radius: 50%;"
+                                    src="/static/user2.png" alt=""></div>
+
+                            <div class="col-md-10" style="border-bottom: 1px solid #ccc;">
+                                <p class="mb-2"><b>{{reply.user.username}} </b>
+                                    <span class="badge bg-secondary text-light"> {{reply.timeStamp | naturaltime}}</span>
+                                </p>
+                                {{reply.your_comment}}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+<footer class="pt-5 pb-4 text-center text-body-secondary bg-body-tertiary mt-5">
+    <p>@webcart - All rights reserved.</p>
+    <p class="mb-0">
+        <a href="#">Back to top</a>
+    </p>
+</footer>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    var temp;
+    var arr = JSON.parse('{{ids}}');
+    var total = parseInt('{{len}}')
+
+
+    if (parseInt('{{post.blog_id}}') == 1) {
+        document.getElementById("prev").style.display = 'none';
+    }
+    else if (parseInt('{{post.blog_id}}') == arr[total - 1]) {
+        document.getElementById("next").style.display = 'none';
+    }
+
+    for (var i = 0; i < total; i++) {
+        if (parseInt('{{post.blog_id}}') == arr[i]) {
+            temp = i;
+        }
+    }
+
+
+    // Try this using slug instead of id...
+    function next() {
+        new_id = arr[temp + 1]
+        window.location = `/blog/BlogPost/${new_id}`
+    }
+
+    function prev() {
+        new_id = arr[temp - 1]
+        window.location = `/blog/BlogPost/${new_id}`
+    }
+
+</script>
+{% endblock %}

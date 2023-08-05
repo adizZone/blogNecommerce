@@ -1,0 +1,17 @@
+{% extends 'blog/basic.html' %}
+{% block title %}test it{% endblock %}
+{% block css %}{% endblock %}
+
+{% block body %}
+
+<div class="m-5">
+    <form action="/blog/test/" method="post"> {% csrf_token %}
+        <label for="img">Select image:</label>
+        <input type="file" id="img" name="img" accept="image/*">
+        <button type="submit" class="btn btn-success">submit</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block js %}{% endblock %}

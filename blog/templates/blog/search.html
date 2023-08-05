@@ -1,0 +1,53 @@
+{% extends 'blog/basic.html' %}
+{% block title %}Blog Home{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block body %}
+
+
+
+<div class="container my-4">
+    <h3 class="text-success mb-1"><b>Search Results: </b></h3>
+    <p class="mx-2">(About {{blogs|length}} results)</p>
+    <div class="row d-flex" style="align-items: center; justify-content: center;">
+        {% for i in blogs %}
+        <div class="card col-3 mx-4 my-4" style="width: 18rem;">
+            <a href="/blog/BlogPost/{{i.blog_id}}">
+                <img src="/media/{{i.image}}" class="card-img-top" height="200px" alt="..."></a>
+            <div class="card-body">
+                <h5 class="card-text text-success"><b>{{i.category}}</b></h5>
+                <h6 class="card-text text-primary mx-1">{{i.title}}</h6>
+                <p class="card-text">{{i.intro|slice:"0:120"}}...</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container" id="no_result">
+    <div class="d-flex mt-0 mb-5" style="align-items: center; justify-content: center;">
+        <img src="/media/blog/images/awSnap.webp" alt="" height="230px" width="300px">
+    </div>
+
+    <p aria-level="3" role="heading" style="padding-top:.33em"><b>Your search - </b> <span><em>{{query}}</em></span> - did not match any documents.</p>
+
+    <p style="margin-top:1em">Suggestions:</p>
+    <ul style="margin-left:1.3em;margin-bottom:2em">
+        <li>Make sure that all words are spelled correctly.</li>
+        <li>Try different keywords.</li>
+        <li>Try more general keywords.</li>
+        <li>Try fewer keywords.</li>
+    </ul>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    console.log(parseInt('{{blogs|length}}'))
+    if(parseInt('{{blogs|length}}') > 0){
+        $('#no_result').css('display', 'none');
+    }
+</script>
+{% endblock %}
