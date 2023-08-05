@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>{% block title %} {% endblock %}</title>
+
+    {% block css %} {% endblock %}
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="/"><strong>Web Cart</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active" id="li01">
+                    <a class="nav-link" href="http://127.0.0.1:8000/shop/">Home</a>
+                </li>
+
+                <li class="nav-item" id="li04">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+
+                <li class="nav-item" id="li02">
+                    <a class="nav-link" href="http://127.0.0.1:8000/shop/about">About</a>
+                </li>
+
+                <li class="nav-item" id="li03">
+                    <a class="nav-link" href="http://127.0.0.1:8000/shop/contact">Contact us</a>
+                </li>
+
+                <li class="nav-item" id="track">
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Track orders
+                    </button>
+                </li>
+
+            </ul>
+
+            <form class="form-inline my-2 my-lg-0" action="/shop/searchResult/" method="get">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search"
+                    name="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <button type="button" id="popcart" class="btn btn-warning mx-2" data-bs-container="body"
+                data-bs-toggle="popover" data-html="true" data-bs-placement="bottom" data-bs-content="Bottom popover">
+                Cart (<span id="cart-index">0</span>)
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title fs-5" id="exampleModalLabel"><b>Please verify tracking_ID and mobile number
+                            to track your order successfully!!!</b></h6>
+                </div>
+                <div class="modal-body">
+                    <div class="container my-4">
+                        <h3 class="mb-4">Enter your details:</h3>
+                        <form class="row g-3" action="/shop/tracker/" method="post" id="trackerForm"> {% csrf_token %}
+                            <div class="col-md-6 my-2">
+                                <label for="trackingId" class="form-label">Tracking_ID</label>
+                                <input type="text" class="form-control" name="trackingId" id="trackingId"
+                                    placeholder="Enter Your Tracking ID" required>
+                            </div>
+                            <div class="col-md-6 my-2">
+                                <label for="mobile" class="form-label">Mobile</label>
+                                <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="Phone">
+                            </div>
+
+                            <div class="col-12 my-2">
+                                <button type="submit" class="btn btn-outline-danger">Track order</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block body %} {% endblock %}
+
+    <!-- <footer class="py-4 text-center text-body-secondary bg-body-tertiary mt-4" id="footer">
+        <p>@webcart - All rights reserved.</p>
+        <p class="mb-0">
+            <a href="#">Back to top</a>
+        </p>
+    </footer> -->
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
+
+
+
+    <!-- My javascript -->
+    <script>
+        if (localStorage.getItem('cart') == null) {
+            var cart = {};
+        }
+
+        else {
+            cart = JSON.parse(localStorage.getItem('cart'));
+            var i = 0;
+            var cart_total = 0;
+            for (i; i < Object.keys(cart).length; i++) {
+                var j = Object.values(cart)[i];
+                cart_total = cart_total + j
+            }
+            document.getElementById('cart-index').innerHTML = cart_total;
+            // updateCart(cart);
+        }
+
+        $('.divprod').on('click', 'button.cart', function () {
+            var id_string = this.id.toString();
+
+            if (cart[id_string] != undefined) {
+                cart[id_string] = cart[id_string] + 1;
+            }
+
+            else {
+                cart[id_string] = 1;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            var i = 0;
+            var cart_total = 0;
+            for (i; i < Object.keys(cart).length; i++) {
+                var j = Object.values(cart)[i];
+                cart_total = cart_total + j
+            }
+            document.getElementById('cart-index').innerHTML = cart_total;
+
+            updateCart(cart);
+            updatePopover(cart);
+
+            document.location = "/shop"
+        });
+
+
+
+        function updateCart(cart) {
+
+            // for loop is creating issue in case of productView, 'cause cart is having more elements than the present elements in prodview page i.e. only one ---- fix this out later
+
+            for (var item in cart) {
+                var item_check = document.getElementById('div' + item)
+
+                if (item_check != null) {
+                    document.getElementById('div' + item).innerHTML = '<button id="minus' + item + '" class="btn btn-primary minus"> - </button>&nbsp' + cart[item] + '&nbsp<button id="plus' + item + '"class="btn btn-primary plus"> + </button>'
+
+                    if (cart[item] == 0) {
+                        document.getElementById("div" + item).innerHTML = "<button id='" + item + "' class='btn btn-outline-danger cart'>Add to Cart</button>"
+                    }
+                }
+            }
+
+            var i = 0;
+            var cart_total = 0;
+            for (i; i < Object.keys(cart).length; i++) {
+                var j = Object.values(cart)[i];
+                cart_total = cart_total + j
+            }
+            document.getElementById('cart-index').innerHTML = cart_total;
+            updatePopover(cart);
+
+        }
+
+
+
+        $('.divprod').on('click', 'button.minus', function () {
+            cart[this.id.slice(5,)] -= 1;
+            var local = Math.max(0, cart[this.id.slice(5,)]);
+
+            if (local == 0) {
+                delete cart[this.id.slice(5,)];
+            }
+            else {
+                cart[this.id.slice(5,)] = local
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart(cart);
+            updatePopover(cart);
+
+            document.location = "/shop"
+
+
+            // if (cart[this.id.slice(5,)] == 0) {
+            //     document.getElementById("div" + this.id.slice(5,)).innerHTML = "<button id='" + this.id.slice(5,) + "' class='btn btn-danger cart'>Add to Cart</button>"
+            //     localStorage.removeItem(cart.this.id.slice(5,))
+            // }
+
+        });
+
+
+        $('.divprod').on('click', 'button.plus', function () {
+            cart[this.id.slice(4,)] += 1;
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart(cart);
+            updatePopover(cart);
+
+            document.location = "/shop"
+        });
+
+
+
+        function updatePopover(cart) {
+            var pop_string = '<h5 class="text-danger">Items in your cart:</h5>'
+
+            if ($.isEmptyObject(cart)) {
+                pop_string += '</h6>&nbsp;<b>Cart is Empty... Add items to buy !!!</b>'
+
+                pop_string += '<div class="row mt-4 mb-2 mx-2">      <button class="btn btn-outline-success mx-2 clear-cart" onclick="clearCart()">Clear cart</button> <form action="/shop/checkout/" method="get"><textarea name="text" style="display: none;" id="hidden" cols="30" rows="10"></textarea> <a href="/shop/checkout/"><button id="check_it_out" class="btn btn-outline-success mx-2" onclick="captureCart()">Checkout</button></a></form>     </div>'
+
+
+                $('#popcart').popover();
+                document.getElementById("popcart").setAttribute('data-content', pop_string);
+                return
+            }
+
+
+            var c = 0;
+            for (var item in cart) {
+                var cart_check = document.getElementById('product_name' + item.slice(4,))
+
+                if (cart_check == null) {
+                    c += 1
+                }
+            }
+            if (c > 0) {
+                pop_string = '<h5 class="text-danger">Searched items in cart:</h5>'
+            }
+
+
+            var i = 1
+            for (var item in cart) {
+                var cart_check = document.getElementById('product_name' + item.slice(4,))
+
+                if (cart_check != null) {
+                    // if (cart[item] == 0) {
+                    //     continue
+                    // }
+
+                    pop_string += '<b>' + i + '.<b> '
+                    pop_string += document.getElementById('product_name' + item.slice(4,)).innerHTML + ', Qty = ' + cart[item] + '<br>'
+
+                    i++;
+                }
+            }
+
+            pop_string += '<div class="row mt-4 mb-2 mx-2">      <button class="btn btn-outline-success mx-2 clear-cart" onclick="clearCart()">Clear cart</button> <form action="/shop/checkout/" method="get"><textarea name="text" style="display: none;" id="hidden" cols="30" rows="10"></textarea> <a href="/shop/checkout/"><button id="check_it_out" class="btn btn-outline-success mx-2" onclick="captureCart()">Checkout</button></a></form>     </div>'
+
+            $('#popcart').popover();
+            document.getElementById("popcart").setAttribute('data-content', pop_string);
+
+        }
+
+
+
+
+        showCart();
+
+        function showCart() {
+            var pop_string = ""
+
+            pop_string += '<div class="row mt-4 mb-2 mx-2">     <form action="/shop/checkout/" method="get"><textarea name="text" style="display: none;" id="hidden" cols="30" rows="10"></textarea> <a href="/shop/checkout/"><button id="check_it_out" class="btn btn-outline-success mx-4" onclick="captureCart()">Checkout</button></a></form>     </div>'
+
+            $('#popcart').popover('show');
+            document.getElementById("popcart").setAttribute('data-content', pop_string);
+        }
+
+
+
+        function clearCart() {
+            cart = JSON.parse(localStorage.getItem('cart'))
+            var check = document.getElementById("div" + item)
+
+            for (var item in cart) {
+                if (check != null) {
+                    document.getElementById("div" + item).innerHTML = "<button id='" + item + "' class='btn btn-outline-danger cart'>Add to Cart</button>"
+                }
+            }
+
+            localStorage.clear();
+            cart = {}
+            updateCart(cart);
+            updatePopover(cart);
+
+            document.location = "/shop"
+        };
+
+
+        function captureCart() {
+            cart = JSON.parse(localStorage.getItem('cart'))
+            var string = ""
+
+            for (var item in cart) {
+                string += item.slice(4,) + '=' + cart[item] + ','
+            }
+
+            document.getElementById("hidden").innerHTML = string
+        }
+
+    </script>
+
+    {% block js %} {% endblock %}
+</body>
+
+</html>

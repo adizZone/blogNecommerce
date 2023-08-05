@@ -1,0 +1,128 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %}Checkout page{% endblock %}
+
+{% block css %}
+<style>
+    #popcart {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<!-- products display -->
+<div class="container">
+    <h2 class="my-5 text-danger"><b>Your cart -</b></h2>
+
+    <ol class="list-group list-group-numbered list-group-flush" id="items">
+        {% for product, qty in placed_products %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+
+            <div class="ms-2 me-auto">
+
+                <img src="/media/{{product.image}}" alt="..." height="150px" width="130">
+                <div class="fw-bold"><b>{{product.product_name}}</b></div>
+                <p>{{product.SubCategory}}</p>
+                {{product.description|slice:"0:60"}}...
+            </div>
+            <span class="badge bg-success text-light rounded-pill py-2 px-4">{{qty}}</span>
+        </li>
+        {% endfor %}
+
+        <h3 class="mt-4 mb-3 "><b>Total Cost = Rs. <span id="cost" style="color: green;">0</span></b></h3>
+        <h4 class="mb-4"><b>--> Proceed down to buy these items !!!</b></h4>
+    </ol>
+</div>
+
+
+
+<!-- checkout information -->
+<div class="container mb-5">
+    <h3 class="mt-5 mb-4">Enter your Checkout details:</h3>
+    <form class="row g-3" action="/shop/checkout/" method="post"> {% csrf_token %}
+
+        <input type="hidden" id="buyItems" name="buyedItems">
+        <input type="hidden" id="amount" name="amount">
+
+        <div class="col-md-6 my-2">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" required>
+        </div>
+        <div class="col-md-6 my-2">
+            <label for="name" class="form-label">E-mail</label>
+            <input type="email" class="form-control" name="email" id="e-mail" placeholder="Your E-mail Address" required>
+        </div>
+        <div class="col-12 my-2">
+            <label for="name" class="form-label">Address</label>
+            <input type="text" class="form-control" name="inputAddress" id="inputAddress"
+                placeholder="Eg: 1234 Main St" required>
+        </div>
+        <div class="col-12 my-2">
+            <label for="name" class="form-label">Address line 2</label>
+            <input type="text" class="form-control" name="inputAddress2" id="inputAddress2"
+                placeholder="Eg: Apartment, studio, or floor">
+        </div>
+        <div class="col-12 my-2">
+            <label for="name" class="form-label">Mobile</label>
+            <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="Phone" required>
+        </div>
+        <div class="col-md-6 my-2">
+            <label for="name" class="form-label">City</label>
+            <input type="text" class="form-control" name="city" id="city" placeholder="Eg: Gurugram" required>
+        </div>
+        <div class="col-md-4 my-2">
+            <label for="name" class="form-label">State</label>
+            <input type="text" class="form-control" name="state" id="state" placeholder="Eg: Haryana" required>
+        </div>
+        <div class="col-md-2 my-2">
+            <label for="name" class="form-label">PIN</label>
+            <input type="text" class="form-control" name="pin_code" id="pin_code" placeholder="Eg: 123029" required>
+        </div>
+        <div class="col-12 my-2">
+            <button type="submit" class="btn btn-outline-danger">Place Order</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    document.getElementById('li01').classList.remove('active');
+
+
+    var cost = 0;
+
+    `{% for product, qty in placed_products %}
+            ${cost+=parseInt("{{product.price}}")*parseInt("{{qty}}")}
+    {% endfor %}`
+
+    document.getElementById('cost').innerHTML = cost;
+
+
+
+    $("#buyItems").val('{{placed_orders}}')
+    '{% if thank == 1 %}'
+        alert('Thanks for ordering from us. Your order has been placed. You can track it using the tracking id: {{id}}');
+        localStorage.clear();
+        window.location = "/shop";
+    '{% endif %}'
+
+    
+    if ($.isEmptyObject(cart)) {
+        document.getElementById('items').innerHTML = "<h5>Your cart has 0 items. Add items you want to buy to Enjoy services !!!</h5>"
+        // alert('Add items in cart to place order')
+        setTimeout(function(){
+            document.location = "/shop";
+        }, 6000);
+    }
+
+    $('#amount').val($("#cost").html())
+</script>
+{% endblock %}

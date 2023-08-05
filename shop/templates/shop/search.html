@@ -1,0 +1,14 @@
+{% extends 'shop/basic.html' %}
+{% block title %}No search found{% endblock %}
+{% block css %}{% endblock %}
+
+{% block body %}
+<div  class="container mt-5 d-flex" style="align-items: center; justify-content: center; color: green; flex-direction: column;">
+    <h1 class="mb-5">"Oops! No search results found..."</h1>
+    <img class="my-5" src="/media/shop/images/awSnap.webp" alt="" width="400px" height="300px"></div>
+{% endblock %}
+{% block js %}
+<script>
+    document.getElementById('footer').style.display = 'none';
+</script>
+{% endblock %}
