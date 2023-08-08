@@ -20,7 +20,7 @@ def index(request):
         all_categories.append([prod, range(1, n_slides), n_slides])
 
     parameters = {'products': all_categories}
-    return render(request, 'index.html', parameters)
+    return render(request, 'shop/index.html', parameters)
 
 
 def search(request):
